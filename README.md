@@ -1,6 +1,110 @@
-# AI Code Review Agent 🤖
+<div align="center">
 
-An intelligent, agentic code review system powered by LLMs and LangGraph. Automatically reviews pull requests, learns from feedback, and provides context-aware suggestions.
+# 🤖 AI Code Review Agent
+
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![LangGraph](https://img.shields.io/badge/LangGraph-FF6B6B?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain.com)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+**An intelligent, agentic code review system powered by LLMs and LangGraph.**
+
+*Automatically reviews pull requests, learns from feedback, and provides context-aware suggestions.*
+
+[Features](#-features) •
+[Quick Start](#-quick-start) •
+[Architecture](#-architecture) •
+[Configuration](#-configuration) •
+[Deployment](#-deployment)
+
+</div>
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🧠 Intelligent Analysis
+- **Multi-Agent Architecture** — Specialized agents for analysis, context retrieval, and review generation
+- **RAG-Powered Context** — Learns from past reviews and coding standards using vector search
+- **Smart File Detection** — Automatically identifies and reviews code files (Python, JavaScript, TypeScript, Go, Rust, and more)
+
+</td>
+<td width="50%">
+
+### ⚡ Production Ready
+- **LangGraph Orchestration** — Stateful, graph-based workflow management
+- **GitHub Integration** — Webhook-driven automatic PR reviews
+- **Docker Ready** — One-command deployment with Docker Compose
+- **Extensible Design** — Easy to add new agents or review rules
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.11+
+- Docker & Docker Compose (optional)
+- OpenAI API key
+- GitHub Personal Access Token
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/MitraKin/ai-code-review-agent.git
+cd ai-code-review-agent
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+# venv\Scripts\activate   # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your API keys
+```
+
+### Running the Application
+
+<table>
+<tr>
+<td width="50%">
+
+#### 🖥️ Backend API
+
+```bash
+uvicorn app.main:app --reload
+```
+Access API docs at: http://localhost:8000/docs
+
+</td>
+<td width="50%">
+
+#### 🎨 Streamlit Frontend
+
+```bash
+streamlit run app/frontend/streamlit_app.py
+```
+Access frontend at: http://localhost:8501
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 🏗️ Architecture
 
@@ -12,7 +116,6 @@ An intelligent, agentic code review system powered by LLMs and LangGraph. Automa
                                ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                      FastAPI Application                        │
-│                        (app/main.py)                            │
 └─────────────────────────────────────────────────────────────────┘
                                │
                                ▼
@@ -21,7 +124,7 @@ An intelligent, agentic code review system powered by LLMs and LangGraph. Automa
 │                 (LangGraph State Machine)                       │
 │                                                                 │
 │   ┌──────────┐    ┌──────────┐    ┌──────────┐                │
-│   │ Analyzer │ -> │ Context  │ -> │ Reviewer │                │
+│   │ Analyzer │───▶│ Context  │───▶│ Reviewer │                │
 │   │  Agent   │    │  Agent   │    │  Agent   │                │
 │   └──────────┘    └──────────┘    └──────────┘                │
 │        │               │               │                        │
@@ -37,174 +140,79 @@ An intelligent, agentic code review system powered by LLMs and LangGraph. Automa
         └──────────┘    └──────────┘    └──────────┘
 ```
 
-## 🚀 Features
-
-- **Multi-Agent Architecture**: Specialized agents for analysis, context retrieval, and review
-- **RAG-Powered Context**: Learns from past reviews and coding standards
-- **LangGraph Orchestration**: Stateful, graph-based workflow management
-- **GitHub Integration**: Webhook-driven automatic PR reviews
-- **Docker Ready**: One-command deployment with Docker Compose
-- **Extensible**: Easy to add new agents or review rules
-
-## 📁 Project Structure
+### 📁 Project Structure
 
 ```
 ai-code-review-agent/
-├── app/
-│   ├── agents/
-│   │   ├── __init__.py
+├── 📂 app/
+│   ├── 📂 agents/
 │   │   ├── analyzer.py      # Parses and analyzes code diffs
 │   │   ├── context.py       # RAG-based context retrieval
 │   │   ├── reviewer.py      # Generates review comments
 │   │   └── orchestrator.py  # LangGraph workflow coordination
-│   ├── api/
-│   │   └── __init__.py
-│   ├── core/
-│   │   ├── __init__.py
+│   ├── 📂 core/
 │   │   ├── config.py        # Pydantic settings
 │   │   └── logging.py       # Structured logging
-│   ├── services/
-│   │   ├── __init__.py
+│   ├── 📂 services/
 │   │   └── github_service.py # GitHub API interactions
-│   ├── db/
-│   │   └── __init__.py
-│   ├── utils/
-│   │   └── __init__.py
-│   ├── __init__.py
+│   ├── 📂 frontend/
+│   │   └── streamlit_app.py  # Streamlit UI
 │   └── main.py              # FastAPI application
-├── tests/
-├── docs/
-├── scripts/
-├── .env.example
-├── .gitignore
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-└── README.md
+├── 📂 tests/                # Test suite
+├── 🐳 Dockerfile
+├── 🐳 docker-compose.yml
+├── 📋 requirements.txt
+└── 📖 README.md
 ```
 
-## 🛠️ Setup
-
-### Prerequisites
-
-- Python 3.11+
-- Docker & Docker Compose
-- OpenAI API key
-- GitHub Personal Access Token (or GitHub App)
-
-### Local Development
-
-1. **Clone and setup environment**:
-   ```bash
-   cd D:\ai-code-review-agent
-   python -m venv venv
-   venv\Scripts\activate  # Windows
-   pip install -r requirements.txt
-   ```
-
-2. **Configure environment**:
-   ```bash
-   copy .env.example .env
-   # Edit .env with your API keys
-   ```
-
-3. **Run the Backend API**:
-   ```bash
-   uvicorn app.main:app --reload
-   ```
-
-4. **Run the Streamlit Frontend** (in a separate terminal):
-   ```bash
-   streamlit run app/frontend/streamlit_app.py
-   ```
-   
-   Access the frontend at: http://localhost:8501
-
-### Docker Deployment
-
-1. **Configure environment**:
-   ```bash
-   copy .env.example .env
-   # Edit .env with your API keys
-   ```
-
-2. **Build and run**:
-   ```bash
-   docker-compose up --build
-   ```
-
-3. **Access**:
-   - API: http://localhost:8000
-   - Docs: http://localhost:8000/docs
-   - pgAdmin: http://localhost:5050 (if enabled)
+---
 
 ## 🔧 Configuration
 
 ### Environment Variables
 
 | Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENAI_API_KEY` | OpenAI API key for LLM calls | Yes |
-| `GITHUB_TOKEN` | GitHub Personal Access Token | Yes* |
-| `GITHUB_APP_ID` | GitHub App ID (alternative auth) | No |
-| `GITHUB_WEBHOOK_SECRET` | Secret for webhook verification | Recommended |
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
+|:---------|:------------|:--------:|
+| `OPENAI_API_KEY` | OpenAI API key for LLM calls | ✅ |
+| `GITHUB_TOKEN` | GitHub Personal Access Token | ✅ |
+| `GITHUB_APP_ID` | GitHub App ID (alternative auth) | ❌ |
+| `GITHUB_WEBHOOK_SECRET` | Secret for webhook verification | ⚠️ |
+| `DATABASE_URL` | PostgreSQL connection string | ✅ |
 
 ### GitHub Webhook Setup
 
-1. Go to your repository Settings → Webhooks
-2. Add webhook:
-   - Payload URL: `https://your-domain.com/webhook/github`
-   - Content type: `application/json`
-   - Secret: Your `GITHUB_WEBHOOK_SECRET`
-   - Events: Select "Pull requests"
+1. Navigate to **Repository Settings → Webhooks**
+2. Click **Add webhook** and configure:
+   - **Payload URL:** `https://your-domain.com/webhook/github`
+   - **Content type:** `application/json`
+   - **Secret:** Your `GITHUB_WEBHOOK_SECRET`
+   - **Events:** Select `Pull requests`
 
-## 📚 Implementation Guide
+---
 
-### Step 1: Complete the Analyzer Agent
-Start with `app/agents/analyzer.py`:
-- [ ] Implement `parse_diff_hunks()` for parsing unified diffs
-- [ ] Complete `_analyze_file_change()` with LLM categorization
-- [ ] Add language-specific analysis logic
+## 🐳 Deployment
 
-### Step 2: Implement RAG in Context Agent
-Work on `app/agents/context.py`:
-- [ ] Initialize ChromaDB collections
-- [ ] Implement embedding generation
-- [ ] Complete similarity search methods
-- [ ] Add context summarization
-
-### Step 3: Build Review Generation
-Finish `app/agents/reviewer.py`:
-- [ ] Implement `_review_file()` with LLM calls
-- [ ] Add security and performance review passes
-- [ ] Complete `_generate_overall_assessment()`
-
-### Step 4: Wire Up the Orchestrator
-Complete `app/agents/orchestrator.py`:
-- [ ] Add conditional edges for error handling
-- [ ] Implement retry logic
-- [ ] Add parallel processing for multiple files
-
-### Step 5: Cloud Deployment
-- [ ] Set up AWS ECS / GCP Cloud Run / Azure Container Apps
-- [ ] Configure secrets management
-- [ ] Set up monitoring and logging
-- [ ] Configure auto-scaling
-
-## 🧪 Testing
+### Docker Compose (Recommended)
 
 ```bash
-# Run tests
-pytest
+# Configure environment
+cp .env.example .env
+# Edit .env with your API keys
 
-# With coverage
-pytest --cov=app tests/
+# Build and run
+docker-compose up --build
 ```
 
-## 🚢 Cloud Deployment Options
+**Access Points:**
+- 🌐 API: http://localhost:8000
+- 📚 Docs: http://localhost:8000/docs
+- 🗄️ pgAdmin: http://localhost:5050
 
-### AWS (ECS + Fargate)
+### Cloud Deployment
+
+<details>
+<summary><b>☁️ AWS (ECS + Fargate)</b></summary>
+
 ```bash
 # Build and push to ECR
 aws ecr get-login-password | docker login --username AWS --password-stdin <account>.dkr.ecr.<region>.amazonaws.com
@@ -213,7 +221,11 @@ docker tag ai-code-review:latest <account>.dkr.ecr.<region>.amazonaws.com/ai-cod
 docker push <account>.dkr.ecr.<region>.amazonaws.com/ai-code-review:latest
 ```
 
-### GCP (Cloud Run)
+</details>
+
+<details>
+<summary><b>☁️ GCP (Cloud Run)</b></summary>
+
 ```bash
 # Deploy to Cloud Run
 gcloud run deploy ai-code-review \
@@ -222,26 +234,85 @@ gcloud run deploy ai-code-review \
   --allow-unauthenticated
 ```
 
-## 📈 What This Project Demonstrates
-
-- **Agentic AI**: Multi-agent system with specialized roles
-- **LangGraph**: State machine orchestration for complex workflows
-- **RAG**: Retrieval-augmented generation for context-aware responses
-- **Production Architecture**: Docker, async Python, structured logging
-- **API Design**: RESTful endpoints, webhook handling
-- **DevOps**: Containerization, environment configuration
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-## 📄 License
-
-MIT License - feel free to use this for your portfolio!
+</details>
 
 ---
 
-**Built as a portfolio project to demonstrate AI engineering expertise.**
+## 🧪 Testing
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage report
+pytest --cov=app tests/
+
+# Run specific test file
+pytest tests/test_analyzer.py -v
+```
+
+---
+
+## 💡 Key Technologies
+
+<table>
+<tr>
+<td align="center" width="20%">
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" width="48" height="48" alt="Python" />
+<br><b>Python</b>
+<br><sub>Core Language</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/fastapi/fastapi-original.svg" width="48" height="48" alt="FastAPI" />
+<br><b>FastAPI</b>
+<br><sub>API Framework</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" width="48" height="48" alt="Docker" />
+<br><b>Docker</b>
+<br><sub>Containerization</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" width="48" height="48" alt="PostgreSQL" />
+<br><b>PostgreSQL</b>
+<br><sub>Database</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" width="48" height="48" alt="GitHub" />
+<br><b>GitHub</b>
+<br><sub>Integration</sub>
+</td>
+</tr>
+</table>
+
+**Additional:** LangGraph • LangChain • OpenAI GPT-4 • ChromaDB • Streamlit • Pydantic
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. 🍴 Fork the repository
+2. 🌿 Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. 💻 Make your changes
+4. ✅ Run tests (`pytest`)
+5. 📝 Commit your changes (`git commit -m 'Add amazing feature'`)
+6. 🚀 Push to the branch (`git push origin feature/amazing-feature`)
+7. 🔃 Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if you find it helpful!**
+
+Made with ❤️ by [MitraKin](https://github.com/MitraKin)
+
+</div>
